@@ -12,7 +12,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient(); // DocumentClient() class us
 const table = "Thoughts"; // table value is set here to Thoughts
 
 
-// retrieve ALL the users thoughts
+// GET ALL the users thoughts
 router.get('/users', (req, res) => {
   const params = {
     TableName: table
@@ -26,7 +26,7 @@ router.get('/users', (req, res) => {
   });
 });
 
-// retrieve INDIVIDUAL user thoughts
+// GET INDIVIDUAL user thoughts
 router.get('/users/:username', (req, res) => {
   console.log(`Querying for thought(s) from ${req.params.username}.`);
   // defining query call to dynamodb. in order to obtain single user and their thoughts
@@ -55,6 +55,25 @@ router.get('/users/:username', (req, res) => {
   });
 });// closes the route for router.get(users/:username)
 
-
+// POST new USER at /api/users
+router.post('/users', (req, res) => {
+  const params = {
+    TableName: table,
+    Item: { // shit we're sending in the request body
+      "username": req.body.username,
+      "createdAt": Date.now(), // JS native
+      "thought": req.body.thought
+    }
+  };
+  dynamodb.put(params, (err, data) => { // database call, it is a PUT when using dynanamodb since we are adding to the Thoughts table
+    if (err) {
+      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      res.status(500).json(err); // an error occurred
+    } else {
+      console.log("Added item:", JSON.stringify(data, null, 2));
+      res.json({"Added": JSON.stringify(data, null, 2)});
+    }
+  });
+});
 
 module.exports = router;
