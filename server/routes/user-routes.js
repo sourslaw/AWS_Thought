@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router(); 
 const AWS = require("aws-sdk"); // connecting w/ local dynamodb instance
 const awsConfig = {
-  region: "us-east-2", // points to local dynamodb instance 
-  endpoint: "http://localhost:8000", //
+  region: "us-east-2" // points to local dynamodb instance 
+  // endpoint: "http://localhost:8000", // removed this endpoint to deploy to AWS
 };
 
 AWS.config.update(awsConfig);
