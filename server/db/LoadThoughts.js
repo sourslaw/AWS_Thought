@@ -20,7 +20,8 @@ allUsers.forEach(user => {
     Item: {
       "username": user.username,
       "createdAt": user.createdAt,
-      "thought": user.thought
+      "thought": user.thought,
+      "image": user.image
     }
   }
   // make call to database w/ service interface object, dynamodb

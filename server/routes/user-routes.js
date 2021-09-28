@@ -36,12 +36,13 @@ router.get('/users/:username', (req, res) => {
     ExpressionAttributeNames: { // using assigned alias (#un, #ca, #th) to represent attribute names
       "#un": "username",
       "#ca": "createdAt",
-      "#th": "thought"
+      "#th": "thought",
+      "#img": "image"
     },
     ExpressionAttributeValues: { // using the username selected by the user in the client to determine condition of the search (user decides which name to query)
       ":user": req.params.username
     },
-    ProjectionExpression: "#th, #ca", // determines which attributes or columns will be returned (similar to SELECT in SQL)
+    ProjectionExpression: "#un, #th, #ca, #img", // determines which attributes or columns will be returned (similar to SELECT in SQL)
     ScanIndexForward: false // boolean value. specifies order of sort key (default (true) is ascending). set to false b/c we want recent posts on top
   };
   dynamodb.query(params, (err, data) => {
@@ -62,7 +63,8 @@ router.post('/users', (req, res) => {
     Item: { // shit we're sending in the request body
       "username": req.body.username,
       "createdAt": Date.now(), // JS native
-      "thought": req.body.thought
+      "thought": req.body.thought,
+      "image": req.body.image  // add new image attribute
     }
   };
   dynamodb.put(params, (err, data) => { // database call, it is a PUT when using dynanamodb since we are adding to the Thoughts table
