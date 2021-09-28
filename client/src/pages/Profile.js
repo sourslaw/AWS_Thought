@@ -11,6 +11,21 @@ const Profile = props => {
     thought: '',
   }]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/users/${userParam}`); // userParam from React Router. pass userParam to database URL
+        const data = await res.json();
+        console.log(data);
+        setThoughts([...data]); // set state with data response
+        setIsLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [userParam]);
+
   return (
     <div>
       <div className="flex-row mb-3">

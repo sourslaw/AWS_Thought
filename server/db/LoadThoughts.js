@@ -2,8 +2,8 @@ const AWS = require("aws-sdk");
 const fs = require('fs');
 
 AWS.config.update({
-  region: "us-east-2",
-  endpoint: "http://localhost:8000"
+  region: "us-east-2"
+  // endpoint: "http://localhost:8000" // removed this endpoint to deploy to AWS
 });
 
 // using DocumentClient() class to  create the dynamodb service object
@@ -20,7 +20,8 @@ allUsers.forEach(user => {
     Item: {
       "username": user.username,
       "createdAt": user.createdAt,
-      "thought": user.thought
+      "thought": user.thought,
+      "image": user.image
     }
   }
   // make call to database w/ service interface object, dynamodb
